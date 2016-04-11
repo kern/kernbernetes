@@ -34,3 +34,13 @@ spec:
         env:
         - name: FORCE_SSL
           value: "true"
+        - name: TWILIO_SID
+          valueFrom:
+            secretKeyRef:
+              name: twilio
+              key: sid
+        - name: TWILIO_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: twilio
+              key: token

@@ -31,7 +31,7 @@ start-cluster: secrets/Kernbernetes.pem.pub | build/kubernetes
 stop-cluster: secrets/Kernbernetes.pem.pub | build/kubernetes
 	@ ./scripts/stop-cluster.sh | tee log/stop-cluster-$(shell date "+%Y-%m-%d-%H-%M-%S").log
 
-filepizza: objects/filepizza.yaml
+filepizza: secrets/all.yaml objects/filepizza.yaml
 
 context:
 	@ kubectl config use-context $(CONTEXT) --namespace=$(NAMESPACE) > /dev/null
@@ -46,6 +46,10 @@ secrets/Kernbernetes.pem.pub: secrets/Kernbernetes.pem
 	@ echo "Generating public key for secrets/Kernbernetes.pem"
 	@ chmod 600 secrets/Kernbernetes.pem
 	@ ssh-keygen -y -f secrets/Kernbernetes.pem > secrets/Kernbernetes.pem.pub
+
+secrets/all.yaml: context
+	@ if [[ ! -e secrets/all.yaml ]]; then echo "secrets/all.yaml was not found!"; exit 1; fi
+	@ kubectl apply -f secrets/all.yaml
 
 # =============================================================================
 # object management
