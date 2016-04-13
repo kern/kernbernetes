@@ -8,6 +8,7 @@ spec:
   ports:
   - name: http
     port: 80
+    nodePort: 31337
     protocol: TCP
   selector:
     app: filepizza
@@ -18,7 +19,7 @@ metadata:
   namespace: default
   name: filepizza
 spec:
-  replicas: 2
+  replicas: 1
   minReadySeconds: 15
   template:
     metadata:
@@ -28,7 +29,7 @@ spec:
       dnsPolicy: ClusterFirst
       containers:
       - name: filepizza
-        image: kern/filepizza:1.0.2
+        image: kern/filepizza:1.0.6
         ports:
         - containerPort: 80
         env:
