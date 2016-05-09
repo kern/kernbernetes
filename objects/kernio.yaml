@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: default
+  name: kernio
+spec:
+  type: LoadBalancer
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+  selector:
+    app: kernio
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  namespace: default
+  name: kernio
+spec:
+  replicas: 1
+  minReadySeconds: 15
+  template:
+    metadata:
+      labels:
+        app: kernio
+    spec:
+      containers:
+      - name: kernio
+        image: kern/io
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80

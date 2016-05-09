@@ -1,6 +1,6 @@
 .PHONY: all FORCE \
 	start-cluster stop-cluster \
-	namespace filepizza \
+	namespace kernio filepizza \
 	context nodes pods all-pods secrets all-secrets rc all-rc deployments all-deployments services all-services
 
 KUBERNETES_VERSION ?= v1.2.0
@@ -9,7 +9,7 @@ KUBERNETES_URL ?= https://storage.googleapis.com/kubernetes-release/release/$(KU
 CONTEXT ?= aws_kernbernetes
 NAMESPACE ?= default
 
-all: filepizza
+all: kernio filepizza
 
 FORCE:
 
@@ -30,6 +30,8 @@ start-cluster: secrets/Kernbernetes.pem.pub | build/kubernetes
 
 stop-cluster: secrets/Kernbernetes.pem.pub | build/kubernetes
 	@ ./scripts/stop-cluster.sh | tee log/stop-cluster-$(shell date "+%Y-%m-%d-%H-%M-%S").log
+
+kernio: secrets/all.yaml objects/kernio.yaml
 
 filepizza: secrets/all.yaml objects/filepizza.yaml
 
