@@ -6,7 +6,7 @@
 KUBERNETES_VERSION ?= v1.2.0
 KUBERNETES_URL ?= https://storage.googleapis.com/kubernetes-release/release/$(KUBERNETES_VERSION)/kubernetes.tar.gz
 
-CONTEXT ?= aws_kernbernetes
+CONTEXT ?= aws_kernbernetes-aws
 NAMESPACE ?= default
 
 all: kernio filepizza

@@ -1,5 +1,8 @@
 #! /usr/bin/env bash
 
+set -e
+set -u
+
 echo -n "Enter a Kernbernetes cluster ID [kernbernetes]: "
 read CLUSTER_ID
 
@@ -12,7 +15,7 @@ export KUBERNETES_PROVIDER=aws
 export KUBE_AWS_INSTANCE_PREFIX=${CLUSTER_ID:-kernbernetes}
 export KUBE_AWS_ZONE=us-west-1a
 export KUBE_OS_DISTRIBUTION=jessie
-export MASTER_SIZE=m3.xlarge
+export MASTER_SIZE=m3.medium
 export NODE_SIZE=m3.large
 export NUM_NODES=1
 
