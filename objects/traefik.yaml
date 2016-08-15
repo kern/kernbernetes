@@ -1,0 +1,65 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: default
+  name: traefik
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:us-west-2:983805983899:certificate/e819e148-2212-46ce-9ddb-110805ad0465
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
+    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: https
+spec:
+  type: LoadBalancer
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+    protocol: TCP
+  - name: https
+    port: 443
+    targetPort: 443
+    protocol: TCP
+  selector:
+    app: traefik
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: default
+  name: traefik-web-ui
+spec:
+  selector:
+    app: traefik
+  ports:
+  - port: 80
+    targetPort: 8080
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  namespace: default
+  name: traefik
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: traefik
+        version: "2"
+    spec:
+      terminationGracePeriodSeconds: 60
+      containers:
+      - name: traefik
+        image: containous/traefik
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        - containerPort: 443
+        - containerPort: 8080
+        args:
+        - --web
+        - --kubernetes
+        - --kubernetes.namespaces=default
+        - --logLevel=DEBUG
+        - --defaultEntryPoints=http,https
+        - --entryPoints=Name:http Address::80 Redirect.Regex:^http://(.*) Redirect.Replacement:https://$1
+        - --entryPoints=Name:https Address::443

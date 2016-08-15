@@ -4,10 +4,11 @@ echo -n "Enter a Kernbernetes cluster ID [kernbernetes]: "
 read CLUSTER_ID
 
 # aws
-export AWS_SSH_KEY=$(realpath secrets/Kernbernetes.pem)
+export AWS_DEFAULT_PROFILE=kernbernetes
+export AWS_SSH_KEY=$(realpath secrets/keys/kernbernetes.pem)
 export KUBERNETES_PROVIDER=aws
 export KUBE_AWS_INSTANCE_PREFIX=${CLUSTER_ID:-kernbernetes}
-export KUBE_AWS_ZONE=us-west-1a
+export KUBE_AWS_ZONE=us-west-2a
 export KUBE_OS_DISTRIBUTION=jessie
 
 # spin down kube

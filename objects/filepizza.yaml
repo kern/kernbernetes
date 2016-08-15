@@ -14,6 +14,23 @@ spec:
     app: filepizza
 ---
 apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  namespace: default
+  name: filepizza
+  annotations:
+    traefik.frontend.rule.type: PathPrefix
+spec:
+  rules:
+  - host: file.pizza
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: filepizza
+          servicePort: 80
+---
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   namespace: default
