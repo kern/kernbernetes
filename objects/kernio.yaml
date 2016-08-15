@@ -20,6 +20,13 @@ metadata:
     traefik.frontend.rule.type: PathPrefix
 spec:
   rules:
+  - host: www.kern.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: kernio
+          servicePort: 80
   - host: kern.io
     http:
       paths:
